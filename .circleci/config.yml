@@ -40,3 +40,17 @@ jobs:
                       sleep 1
                     done
                     truffle test --network rsk
+workflows:
+    commit:
+        jobs:
+            - build
+    daily:
+        triggers:
+            - schedule:
+                cron: "36 01 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
+        jobs:
+            - build
