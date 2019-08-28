@@ -29,7 +29,7 @@ jobs:
                     sudo apt install build-essential
       - run:
           name: Prepare Truffle
-          command: npm install -g truffle
+          command: sudo npm install -g truffle
       - run:
           name: Start RskJ & Run Tests
           command: |
