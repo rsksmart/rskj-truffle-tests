@@ -29,7 +29,10 @@ jobs:
                     sudo apt install build-essential
       - run:
           name: Prepare Truffle
-          command: sudo npm install -g truffle
+          command: |
+                    sudo npm install -g truffle
+                    sudo npm install -g mocha-junit-reporter
+                    sudo npm install bignumber.js
       - run:
           name: Start RskJ & Run Tests
           command: |
@@ -40,6 +43,10 @@ jobs:
                       sleep 1
                     done
                     truffle test --network rsk
+
+      - store_test_results:
+          path: ~/smart-contracts/Results
+
 workflows:
     commit:
         jobs:

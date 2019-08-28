@@ -79,7 +79,12 @@ module.exports = {
 
   // Set default mocha options here, use special reporters etc.
   mocha: {
-    // timeout: 100000
+    "useColors": true,
+    "reporter": "mocha-junit-reporter",
+    reporterOptions: {
+      "mochaFile": "./Results/mocha/Test-Results.xml"
+    },
+    
   },
 
   // Configure your compilers
