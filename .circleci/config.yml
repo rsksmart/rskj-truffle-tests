@@ -31,9 +31,9 @@ jobs:
           name: Prepare Truffle
           command: |
                     sudo npm install -g truffle
-                    sudo npm install -g mocha-multi-reporters mocha-junit-reporter
+                    sudo npm install -g mocha-multi-reporters mocha-xunit-reporter
                     cd ~/smart-contracts/
-                    npm install --save-dev mocha-junit-reporter
+                    npm install --save-dev mocha-xunit-reporter
                     npm install --save-dev bignumber.js
       - run:
           name: Start RskJ & Run Tests
