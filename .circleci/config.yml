@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run:
           name: Install Truffle
-          command: npm install -g truffle
+          command: npm install truffle
       - run:
           name: Clone and Build RSKj
           command: |
