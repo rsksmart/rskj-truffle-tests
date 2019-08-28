@@ -19,8 +19,7 @@ jobs:
                     cd ~/rsksmart/rskj/
                     ./configure.sh
                     ./gradlew clean build -x test
-     
-     - run:
+      - run:
           name: Start RskJ & Run Tests
           command: |
                     java -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-1.1.0-SNAPSHOT-all.jar co.rsk.Start --regtest nohup &               
@@ -30,4 +29,3 @@ jobs:
                       sleep 1
                     done
                     truffle test --network rsk
-     
