@@ -34,7 +34,7 @@ jobs:
                     cd ~/smart-contracts/
                     npm install --save-dev bignumber.js
       - run:
-          name: Start RskJ
+          name: Start RskJ & Run Truffle Tests
           command: |
                     java -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-1.1.0-SNAPSHOT-all.jar co.rsk.Start --regtest nohup &               
                     until nc -z 127.0.0.1 4444
@@ -42,9 +42,6 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done         
-      - run:
-          name: Run Truffle Tests
-          command: |
                     truffle test --network rsk
 
       - store_test_results:
