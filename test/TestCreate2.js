@@ -2,7 +2,7 @@ const Create2 = artifacts.require("Create2");
 var assert = require('assert');
 
 //import util functions
-const commonFunctions = require('./common.js');
+const commonFunctions = require('./utils/common.js');
 const setSenderAddress = commonFunctions.setSenderAddress;
 const setExpectedAddress = commonFunctions.setExpectedAddress;
 

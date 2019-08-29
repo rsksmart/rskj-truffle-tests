@@ -16,11 +16,7 @@ contract('Sample', async function(accounts) {
         sample = await Sample.new()
         var tx = await web3.eth.getTransactionReceipt(sample.transactionHash)
         totalGas = totalGas.plus(tx.gasUsed)
-        console.log(_ + tx.gasUsed + ' - Deploy sample')
         sample = await Sample.deployed()
-
-        console.log(_ + '-----------------------')
-        console.log(_ + totalGas.toFormat(0) + ' - Total Gas')
         done()
       } catch (error) {
         console.error(error)
@@ -30,7 +26,7 @@ contract('Sample', async function(accounts) {
   })
 
   describe('Sample.sol', function() {
-    it('should pass', async function() {
+    it('Should pass all checks and complete process', async function() {
       assert(
         true === true,
         'this is true'
