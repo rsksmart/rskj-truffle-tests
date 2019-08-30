@@ -50,11 +50,11 @@ contract('EIP20', (accounts) => {
     const balance = await HST.balanceOf.call(accounts[1]);
     assert.strictEqual(balance.toNumber(), 10000);
   });
-/*
+
   it('transfers: should fail when trying to transfer 10001 to accounts[1] with accounts[0] having 10000', async () => {
-    await assertRevert(HST.transfer.call(accounts[1], 10001, { from: accounts[0] }));
+    await truffleAssert.reverts((HST.transfer.call(accounts[1], 10001, { from: accounts[0] })),"Returned error: VM execution error: transaction reverted");
   });
-*/
+
   it('transfers: should handle zero-transfers normally', async () => {
     assert(await HST.transfer.call(accounts[1], 0, { from: accounts[0] }), 'zero-transfer has failed');
   });
@@ -119,7 +119,7 @@ contract('EIP20', (accounts) => {
     const balance02 = await HST.balanceOf.call(accounts[0]);
     assert.strictEqual(balance02.toNumber(), 9960);
   });
-/*
+
   // should approve 100 of msg.sender & withdraw 50 & 60 (should fail).
   it('approvals: msg.sender approves accounts[1] of 100 & withdraws 50 & 60 (2nd tx should fail)', async () => {
     await HST.approve(accounts[1], 100, { from: accounts[0] });
@@ -138,20 +138,20 @@ contract('EIP20', (accounts) => {
 
     // FIRST tx done.
     // onto next.
-    await assertRevert(HST.transferFrom.call(accounts[0], accounts[2], 60, { from: accounts[1] }));
+    await truffleAssert.reverts(HST.transferFrom.call(accounts[0], accounts[2], 60, { from: accounts[1] }),"Returned error: VM execution error: transaction reverted");
   });
 
   it('approvals: attempt withdrawal from account with no allowance (should fail)', async () => {
-    await assertRevert(HST.transferFrom.call(accounts[0], accounts[2], 60, { from: accounts[1] }));
+    await truffleAssert.reverts(HST.transferFrom.call(accounts[0], accounts[2], 60, { from: accounts[1] }),"Returned error: VM execution error: transaction reverted");
   });
 
   it('approvals: allow accounts[1] 100 to withdraw from accounts[0]. Withdraw 60 and then approve 0 & attempt transfer.', async () => {
     await HST.approve(accounts[1], 100, { from: accounts[0] });
     await HST.transferFrom(accounts[0], accounts[2], 60, { from: accounts[1] });
     await HST.approve(accounts[1], 0, { from: accounts[0] });
-    await assertRevert(HST.transferFrom.call(accounts[0], accounts[2], 10, { from: accounts[1] }));
+    await truffleAssert.reverts(HST.transferFrom.call(accounts[0], accounts[2], 10, { from: accounts[1] }),"Returned error: VM execution error: transaction reverted");
   });
-*/
+
   it('approvals: approve max (2^256 - 1)', async () => {
     await HST.approve(accounts[1], '115792089237316195423570985008687907853269984665640564039457584007913129639935', { from: accounts[0] });
     const allowance = await HST.allowance(accounts[0], accounts[1]);
