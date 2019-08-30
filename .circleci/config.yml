@@ -33,6 +33,7 @@ jobs:
                     sudo npm install -g truffle
                     cd ~/smart-contracts/
                     npm install --save-dev bignumber.js
+                    npm install --save-dev truffle-assertions
       - run:
           name: Start RskJ & Run Truffle Tests
           command: |
