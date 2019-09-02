@@ -34,6 +34,7 @@ jobs:
                     cd ~/smart-contracts/
                     npm install --save-dev bignumber.js
                     npm install --save-dev truffle-assertions
+                    npm install --save-dev rlp
       - run:
           name: Start RskJ & Run Truffle Tests
           command: |
