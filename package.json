@@ -1,0 +1,28 @@
+{
+  "name": "rskj-truffle-tests",
+  "version": "0.0.2",
+  "description": "A Truffle Test Suite for RSKj",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test --network rsk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iovlabs-qa/rskj-truffle-tests.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iovlabs-qa/rskj-truffle-tests/issues"
+  },
+  "homepage": "https://github.com/iovlabs-qa/rskj-truffle-tests#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "bignumber.js": "^9.0.0",
+    "rlp": "^2.2.3",
+    "truffle-assertions": "^0.9.1"
+  }
+}

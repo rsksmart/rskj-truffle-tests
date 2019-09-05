@@ -32,9 +32,7 @@ jobs:
           command: |
                     sudo npm install -g truffle
                     cd ~/smart-contracts/
-                    npm install --save-dev bignumber.js
-                    npm install --save-dev truffle-assertions
-                    npm install --save-dev rlp
+                    npm install 
       - run:
           name: Start RskJ & Run Truffle Tests
           command: |
@@ -44,10 +42,8 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done         
-                    truffle test --network rsk
+                    npm test
 
-      - store_test_results:
-          path: ~/smart-contracts/Results
 
 workflows:
     commit:
