@@ -1,6 +1,7 @@
 const Migrations = artifacts.require("Migrations");
 const Create2 = artifacts.require("Create2");
 const Recursive = artifacts.require("Recursive");
+const Selfbalance = artifacts.require("Selfbalance");
 
 const Sample = artifacts.require("Sample");
 const DestroyAndExtCodeHash = artifacts.require("DestroyAndExtCodeHash")
@@ -12,8 +13,8 @@ module.exports = function(deployer) {
   deployer.deploy(Create2);
   deployer.deploy(Recursive);
   deployer.deploy(Sample);
+  deployer.deploy(Selfbalance);
   deployer.deploy(DestroyAndExtCodeHash);
   deployer.deploy(SelfDestructor);
   deployer.deploy(CreateAndExtCodeHash);
-
 };
