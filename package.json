@@ -22,6 +22,7 @@
   "dependencies": {},
   "devDependencies": {
     "bignumber.js": "^9.0.0",
+    "mocha-allure-reporter": "^1.4.0",
     "rlp": "^2.2.3",
     "truffle-assertions": "^0.9.1"
   }
