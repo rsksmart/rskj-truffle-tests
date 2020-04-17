@@ -47,3 +47,4 @@ node_modules/assertion-error/index.js
 node_modules/assertion-error/index.d.ts
 node_modules/assertion-error/History.md
 node_modules/.bin/rlp
+build
