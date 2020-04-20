@@ -31,7 +31,7 @@ contract('RecursiveParent', () => {
 
       const counter = await this.recursiveContract.counter();
       
-      assert.equals(counter, 0);
+      assert.equal(counter, 0);
     })
   })
 })
