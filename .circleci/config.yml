@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Start RskJ & Run Truffle Tests
           command: |
-                    java -Dblockchain.config.hardforkActivationHeights.papyrus200=0 -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-2.0.0-SNAPSHOT-all.jar co.rsk.Start --regtest nohup &               
+                    java -Dblockchain.config.hardforkActivationHeights.papyrus200=0 -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-2.1.0-SNAPSHOT-all.jar co.rsk.Start --regtest nohup &               
                     until nc -z 127.0.0.1 4444
                     do
                       echo "Waiting for RskJ..."
