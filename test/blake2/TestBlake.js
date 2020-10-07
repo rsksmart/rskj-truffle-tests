@@ -40,7 +40,6 @@ contract('Blake2bTest', function (accounts) {
     it('equihash n=200 k=9 synthethic', async () => {
         let ret = await contract.equihashTestN200K9.call();
         assert.equal(ret.toString(), '14394687529728284581040569373478606499820061758322408099941575726000591405977', 'output mismatch');
-        console.log('Gas usage', await contract.equihashTestN200K9.estimateGas());
     });
 
     it('blake2b reference test vectors', async () => {
