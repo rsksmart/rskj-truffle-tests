@@ -15,7 +15,7 @@ jobs:
           name: Clone and Build RSKj
           command: |
                     GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_fingerprint'
-                    git clone git@github.com:rsksmart/rskj.git ~/rsksmart/rskj
+                    git clone -b blake2f git@github.com:rsksmart/rskj.git ~/rsksmart/rskj
                     cd ~/rsksmart/rskj/
                     ./configure.sh
                     ./gradlew clean build -x test
@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Start RskJ & Run Truffle Tests
           command: |
-                    java -Dblockchain.config.hardforkActivationHeights.papyrus200=0 -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-2.2.0-SNAPSHOT-all.jar co.rsk.Start --regtest nohup &               
+                    java -Dblockchain.config.hardforkActivationHeights.iris300=0 -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-2.2.0-SNAPSHOT-all.jar co.rsk.Start --regtest nohup &               
                     until nc -z 127.0.0.1 4444
                     do
                       echo "Waiting for RskJ..."
