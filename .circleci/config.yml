@@ -43,6 +43,7 @@ jobs:
           command: |
                     sudo npm install -g truffle
                     cd ~/smart-contracts/
+                    sudo npm install -g @truffle/db
                     sudo npm install 
       - run:
           name: Start RskJ & Run Truffle Tests
