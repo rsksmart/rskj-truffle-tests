@@ -19,7 +19,9 @@
     "url": "https://github.com/iovlabs-qa/rskj-truffle-tests/issues"
   },
   "homepage": "https://github.com/iovlabs-qa/rskj-truffle-tests#readme",
-  "dependencies": {},
+  "dependencies": {
+    "@truffle/db": "^0.5.1"
+  },
   "devDependencies": {
     "bignumber.js": "^9.0.0",
     "rlp": "^2.2.3",
