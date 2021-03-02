@@ -53,6 +53,7 @@ jobs:
           command: |
                     sudo npm install -g truffle
                     export TRUFFLE_VERSION=$(truffle version utility 2>&1 | head -n 1)
+                    echo $TRUFFLE_VERSION
                     cd ~/smart-contracts/
                     npm install 
       - save_cache:
