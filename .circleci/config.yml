@@ -45,7 +45,6 @@ jobs:
           name: Prepare Truffle
           command: |
                     sudo npm install -g truffle
-                    export truffle_version=$(truffle version utility 2>&1 | head -n 1)
                     cd ~/smart-contracts/
                     npm install 
 
@@ -58,8 +57,6 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done     
-                    truffle version utility 2>&1 | head -n 1
-                    echo "${truffle_version}"
                     # npm test
       - slack/notify:
           channel: << pipeline.parameters.slack_channel >>
@@ -79,7 +76,7 @@ jobs:
                         "fields": [
                              {
                                 "type": "mrkdwn",
-                                "text": "*Truffle Version*: ${truffle_version}"
+                                "text": "*Truffle Version*: ${truffle version utility 2>&1 | head -n 1}"
                             },
                             {
                                 "type": "mrkdwn",
