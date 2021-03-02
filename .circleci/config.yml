@@ -19,7 +19,7 @@ jobs:
     working_directory: ~/smart-contracts
     # The primary container is an instance of the first image listed. The job's commands run in this container.
     docker:
-      - image: cimg/openjdk:8.0-node
+      - image: circleci/openjdk:8-jdk
 
     steps:
       - checkout
@@ -34,7 +34,13 @@ jobs:
                     cd ~/rsksmart/rskj/
                     ./configure.sh
                     ./gradlew clean build -x test
-      
+      - run:
+          name: Prepare npm
+          command: |
+                    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+                    sudo apt update
+                    sudo apt-get install -y nodejs
+                    sudo apt install build-essential
       - restore_cache:
             keys:
                 # when lock file changes, use increasingly general patterns to restore cache
@@ -45,10 +51,9 @@ jobs:
       - run:
           name: Prepare Truffle
           command: |
-                    sudo npm install -g npm
                     sudo npm install -g truffle
                     cd ~/smart-contracts/
-                    sudo npm install 
+                    npm install 
       - save_cache:
             paths:
                 - ~/usr/local/lib/node_modules  # location depends on npm version
