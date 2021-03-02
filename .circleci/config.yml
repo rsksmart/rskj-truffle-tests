@@ -58,7 +58,8 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done     
-                    echo ${truffle_version}
+                    truffle version utility 2>&1 | head -n 1
+                    echo "${truffle_version}"
                     # npm test
       - slack/notify:
           channel: << pipeline.parameters.slack_channel >>
