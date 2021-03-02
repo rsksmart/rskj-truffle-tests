@@ -19,7 +19,7 @@ jobs:
     working_directory: ~/smart-contracts
     # The primary container is an instance of the first image listed. The job's commands run in this container.
     docker:
-      - image: circleci/openjdk:8-jdk
+      - image: cimg/openjdk:8.0-node
 
     steps:
       - checkout
@@ -34,19 +34,24 @@ jobs:
                     cd ~/rsksmart/rskj/
                     ./configure.sh
                     ./gradlew clean build -x test
-      - run:
-          name: Prepare npm
-          command: |
-                    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-                    sudo apt update
-                    sudo apt-get install -y nodejs
-                    sudo apt install build-essential
+      
+      - restore_cache:
+            keys:
+                # when lock file changes, use increasingly general patterns to restore cache
+                - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+                - node-v1-{{ .Branch }}-
+                - node-v1-
+
       - run:
           name: Prepare Truffle
           command: |
                     sudo npm install -g truffle
                     cd ~/smart-contracts/
                     npm install 
+      - save_cache:
+            paths:
+                - ~/usr/local/lib/node_modules  # location depends on npm version
+            key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - run:
           name: Start RskJ & Run Truffle Tests
@@ -76,7 +81,7 @@ jobs:
                         "fields": [
                              {
                                 "type": "mrkdwn",
-                                "text": "*Truffle Version*: ${truffle version utility 2>&1 | head -n 1}"
+                                "text": "*Truffle Version*: $TRUFFLE_VERSION"
                             },
                             {
                                 "type": "mrkdwn",
