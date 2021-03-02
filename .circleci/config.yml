@@ -58,7 +58,7 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done     
-                    echo "LAAA VERSION ${truffle_version}"
+                    echo ${truffle_version}
                     # npm test
       - slack/notify:
           channel: << pipeline.parameters.slack_channel >>
