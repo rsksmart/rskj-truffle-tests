@@ -47,7 +47,7 @@ jobs:
           command: |
                     sudo npm install -g truffle
                     cd ~/smart-contracts/
-                    npm install 
+                    sudo npm install 
       - save_cache:
             paths:
                 - ~/usr/local/lib/node_modules  # location depends on npm version
