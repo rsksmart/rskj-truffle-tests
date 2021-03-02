@@ -9,6 +9,9 @@ parameters:
     branch:
         type: string
         default: "master"
+    slack_channel:
+        type: string
+        default: "integration-tests"
 orbs:
   slack: circleci/slack@4.1
 jobs:
@@ -41,9 +44,8 @@ jobs:
       - run:
           name: Prepare Truffle
           command: |
-                    npm install --prefix ~/smart-contracts -g truffle
+                    sudo npm install -g truffle
                     cd ~/smart-contracts/
-                    npm install --prefix ~/smart-contracts -g @truffle/db
                     npm install 
       - run:
           name: Start RskJ & Run Truffle Tests
@@ -53,9 +55,11 @@ jobs:
                     do
                       echo "Waiting for RskJ..."
                       sleep 1
-                    done         
+                    done     
+                    export truffle_version = truffle version utility 2>&1 | head -n 1    
                     npm test
       - slack/notify:
+          channel: << pipeline.parameters.slack_channel >>
           custom: |
             {
                 "blocks": [
@@ -70,6 +74,10 @@ jobs:
                     {
                         "type": "section",
                         "fields": [
+                             {
+                                "type": "mrkdwn",
+                                "text": "*Truffle Version*: $(truffle_version)"
+                            },
                             {
                                 "type": "mrkdwn",
                                 "text": "*Tested Repository*: << pipeline.parameters.repo >>"
@@ -101,6 +109,7 @@ jobs:
                 }
           event: pass
       - slack/notify:
+          channel: << pipeline.parameters.slack_channel >>
           custom: |
             {
                 "blocks": [
