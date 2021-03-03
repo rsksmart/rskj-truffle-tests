@@ -9,7 +9,7 @@ parameters:
     branch:
         type: string
         default: "master"
-    lack_channel:
+    slack_channel:
         type: string
         default: "integration-tests"
 orbs:
