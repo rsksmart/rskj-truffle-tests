@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Prepare Truffle
           command: |
-                    sudo npm install -g truffle
+                    sudo npm install -g truffle@5.2.4
                     cd ~/smart-contracts/
                     npm install 
       - run:
