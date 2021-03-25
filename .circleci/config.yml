@@ -149,7 +149,9 @@ jobs:
                 ]
                 }
           event: fail
-
+      - store_artifacts:
+          path: ~/rsksmart/rskj/rskj-core/build/libs/logs
+          destination: ~/tmp/logs
 workflows:
     commit:
         jobs:
