@@ -1,5 +1,8 @@
 pragma solidity^0.5.8;
 
+import "../Create2.sol";
+
+
 contract CreateAndExtCodeHash {
 
     event ContractHash(bytes32);
@@ -50,24 +53,6 @@ contract CreateAndExtCodeHash {
         }
         return hash;
 	}
-}
-
-contract Create2 {
-    function createOneContract(uint256 salt, bytes memory code) public returns (address){
-        address addr;
-        assembly {
-            addr := create2(0, add(code, 0x20), mload(code), salt)
-        }
-        return addr;
-    }
-    function getCreationCode() public pure returns (bytes memory) {
-        bytes memory code = type(Contract).creationCode;
-        return code;
-    }
-    function getRuntimeCode() public pure returns (bytes memory) {
-        bytes memory code = type(Contract).runtimeCode;
-        return code;
-    }
 }
 
 contract Contract {

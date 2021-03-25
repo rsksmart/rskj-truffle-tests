@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Prepare Truffle
           command: |
-                    sudo npm install -g truffle
+                    sudo npm install -g truffle@5.2.4
                     cd ~/smart-contracts/
                     npm install 
       - run:
@@ -55,7 +55,8 @@ jobs:
                     do
                       echo "Waiting for RskJ..."
                       sleep 1
-                    done         
+                    done
+                    ls ~/smart-contracts/         
                     npm test
       - slack/notify:
           channel: << pipeline.parameters.slack_channel >>
@@ -149,7 +150,9 @@ jobs:
                 ]
                 }
           event: fail
-
+      - store_artifacts:
+          path: ~/smart-contracts/logs
+          destination: ~/tmp/logs
 workflows:
     commit:
         jobs:
