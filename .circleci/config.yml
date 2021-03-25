@@ -56,7 +56,7 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done
-                    ls /home/circleci/rsksmart/rskj/rskj-core/build/libs         
+                    ls ~/smart-contracts/         
                     npm test
       - slack/notify:
           channel: << pipeline.parameters.slack_channel >>
@@ -151,7 +151,7 @@ jobs:
                 }
           event: fail
       - store_artifacts:
-          path: ~/rsksmart/rskj/rskj-core/build/libs/logs
+          path: ~/smart-contracts/logs
           destination: ~/tmp/logs
 workflows:
     commit:
