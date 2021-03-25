@@ -45,7 +45,7 @@ module.exports = {
     rsk: {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 4444,            // Standard Ethereum port (default: none)
-      network_id: 7771,       // Any network (default: none)
+      network_id: 33,       // Any network (default: none)
      },
 
     // Another network with more advanced options...
