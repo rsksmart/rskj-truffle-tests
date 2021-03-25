@@ -55,7 +55,8 @@ jobs:
                     do
                       echo "Waiting for RskJ..."
                       sleep 1
-                    done         
+                    done
+                    ls /home/circleci/rsksmart/rskj/rskj-core/build/libs/logs         
                     npm test
       - slack/notify:
           channel: << pipeline.parameters.slack_channel >>
