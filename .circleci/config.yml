@@ -11,7 +11,7 @@ parameters:
         default: "master"
     slack_channel:
         type: string
-        default: "integration-tests"
+        default: "qa-automated-tests"
 orbs:
   slack: circleci/slack@4.1
 jobs:
@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Prepare Truffle
           command: |
-                    sudo npm install -g truffle@5.2.4
+                    sudo npm install -g truffle
                     cd ~/smart-contracts/
                     npm install 
       - run:
