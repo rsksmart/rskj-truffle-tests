@@ -50,7 +50,7 @@ contract('RRC20', (accounts) => {
   });
 
   it('Transfers: Should fail when trying to transfer 10001 to accounts[1] with accounts[0] having 10000', async () => {
-    await truffleAssert.reverts((HST.transfer.call(accounts[1], 10001, { from: accounts[0] })),"Returned error: VM execution error: transaction reverted");
+    await truffleAssert.reverts((HST.transfer.call(accounts[1], 10001, { from: accounts[0] })),"Returned error: VM Exception while processing transaction: transaction reverted");
   });
 
   it('Transfers: Should handle zero-transfers normally', async () => {
@@ -126,18 +126,18 @@ contract('RRC20', (accounts) => {
     const balance0 = await HST.balanceOf.call(accounts[0]);
     assert.strictEqual(balance0.toNumber(), 9950);
 
-    await truffleAssert.reverts(HST.transferFrom.call(accounts[0], accounts[2], 60, { from: accounts[1] }),"Returned error: VM execution error: transaction reverted");
+    await truffleAssert.reverts(HST.transferFrom.call(accounts[0], accounts[2], 60, { from: accounts[1] }),"Returned error: VM Exception while processing transaction: transaction reverted");
   });
 
   it('Approvals: Attempt withdrawal from account with no allowance (should fail)', async () => {
-    await truffleAssert.reverts(HST.transferFrom.call(accounts[0], accounts[2], 60, { from: accounts[1] }),"Returned error: VM execution error: transaction reverted");
+    await truffleAssert.reverts(HST.transferFrom.call(accounts[0], accounts[2], 60, { from: accounts[1] }),"Returned error: VM Exception while processing transaction: transaction reverted");
   });
 
   it('Approvals: Allow accounts[1] 100 to withdraw from accounts[0]. Withdraw 60 and then approve 0 & attempt transfer.', async () => {
     await HST.approve(accounts[1], 100, { from: accounts[0] });
     await HST.transferFrom(accounts[0], accounts[2], 60, { from: accounts[1] });
     await HST.approve(accounts[1], 0, { from: accounts[0] });
-    await truffleAssert.reverts(HST.transferFrom.call(accounts[0], accounts[2], 10, { from: accounts[1] }),"Returned error: VM execution error: transaction reverted");
+    await truffleAssert.reverts(HST.transferFrom.call(accounts[0], accounts[2], 10, { from: accounts[1] }),"Returned error: VM Exception while processing transaction: transaction reverted");
   });
 
   it('Approvals: Approve max (2^256 - 1)', async () => {
