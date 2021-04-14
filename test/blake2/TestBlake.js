@@ -1,7 +1,7 @@
 const Blake2bTest = artifacts.require('Blake2bTest');
 const TestVectors = require('./blake2.json');
 
-contract('Blake2bTest', function (accounts) {
+contract.only('Blake2bTest', function (accounts) {
     let contract;
 
     before(async () => {
