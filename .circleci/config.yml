@@ -8,7 +8,7 @@ parameters:
         default: "3.0.0-SNAPSHOT"
     branch:
         type: string
-        default: "chainid-jr-support"
+        default: "master"
     slack_channel:
         type: string
         default: "qa-automated-test"
