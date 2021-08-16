@@ -64,7 +64,7 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done
-                    npm test
+                    truffle test --network rsk
 
 
       - store_test_results:
