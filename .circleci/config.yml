@@ -68,9 +68,9 @@ jobs:
 
 
       - store_test_results:
-          path: ~/tmp/results
+          path: ~/smart-contracts/results
       - store_artifacts:
-          path: ~/tmp/results
+          path: ~/smart-contracts/results
 
 
       - slack/notify:
