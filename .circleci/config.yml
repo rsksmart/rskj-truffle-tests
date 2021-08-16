@@ -11,7 +11,7 @@ parameters:
         default: "master"
     slack_channel:
         type: string
-        default: "UDY9ZV16J"
+        default: "integration-tests"
 orbs:
   slack: circleci/slack@4.1
 jobs:
@@ -52,7 +52,7 @@ jobs:
                     npm install 
       - save_cache:
           paths:
-                - ~/tmp/node_modules  # location depends on npm version
+                - ~/tmp/node_modules 
           key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
       - run:
