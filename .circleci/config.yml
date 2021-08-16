@@ -64,7 +64,6 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done
-                    ls ~/smart-contracts/         
                     npm test
 
 
