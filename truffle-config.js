@@ -80,12 +80,11 @@ module.exports = {
 
   // Set default mocha options here, use special reporters etc.
   mocha: {
-   // "useColors": true,
-    //"reporter": 'mocha-xunit-reporter',
-    //reporterOptions: {
-     // "mochaFile": "./Results/mocha/Test-Results.xml"
-   // },
-    
+    useColors: true,
+    reporter: 'mocha-multi-reporters',
+    reporterOptions: {
+      configFile: './mocha-reporter-config.json',
+    },
   },
 
   // Configure your compilers
