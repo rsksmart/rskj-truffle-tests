@@ -19,7 +19,7 @@ jobs:
     working_directory: ~/smart-contracts
     # The primary container is an instance of the first image listed. The job's commands run in this container.
     docker:
-      - image: circleci/openjdk:8-jdk
+      - image: cimg/openjdk:8.0-node
 
     steps:
       - checkout
@@ -38,19 +38,23 @@ jobs:
                     f=`ls *-all.jar`
                     version=`echo $f | cut -c 11-15`
                     echo "export VERSION_FOR_SLACK='${version}'" >> $BASH_ENV
-      - run:
-          name: Prepare npm
-          command: |
-                    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-                    sudo apt update
-                    sudo apt-get install -y nodejs
-                    sudo apt install build-essential
+      
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+                - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+              
       - run:
           name: Prepare Truffle
           command: |
                     sudo npm install -g truffle
                     cd ~/smart-contracts/
                     npm install 
+      - save_cache:
+          paths:
+                - ~/tmp/node_modules 
+          key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+
       - run:
           name: Start RskJ & Run Truffle Tests
           command: |
@@ -60,8 +64,15 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done
-                    ls ~/smart-contracts/         
                     npm test
+
+
+      - store_test_results:
+          path: ~/smart-contracts/results
+      - store_artifacts:
+          path: ~/smart-contracts/results
+
+
       - slack/notify:
           channel: << pipeline.parameters.slack_channel >>
           custom: |

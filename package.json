@@ -21,7 +21,11 @@
   "homepage": "https://github.com/iovlabs-qa/rskj-truffle-tests#readme",
   "dependencies": {},
   "devDependencies": {
+    "-": "0.0.1",
     "bignumber.js": "^9.0.0",
+    "mocha": "^9.0.3",
+    "mocha-junit-reporter": "^2.0.0",
+    "mocha-multi-reporters": "^1.5.1",
     "rlp": "^2.2.3",
     "truffle-assertions": "^0.9.1"
   }
