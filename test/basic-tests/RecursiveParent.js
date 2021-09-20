@@ -1,5 +1,4 @@
 const RecursiveParent = artifacts.require('RecursiveParent');
-const truffleAssert = require('truffle-assertions');
 
 async function expectThrow (promise) {
   try {
@@ -28,7 +27,7 @@ contract('RecursiveParent', () => {
     });
 
     it('Using 401 levels of recursion the transaction should be reverted', async () => {
-      await truffleAssert.reverts(this.recursiveContract.increment(401));
+      expectThrow(this.recursiveContract.increment(401));
 
       const counter = await this.recursiveContract.counter();
       
