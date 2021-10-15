@@ -48,7 +48,7 @@ jobs:
           name: Prepare Truffle
           command: |
                     sudo npm install -g truffle
-                    truffle_version=`truffle version`
+                    truffle_version=`truffle version | cut -c 1-15`
                     echo "export TRUFFLE_VERSION_FOR_SLACK='${truffle_version}'" >> $BASH_ENV
                     cd ~/smart-contracts/
                     npm install 
