@@ -48,6 +48,8 @@ jobs:
           name: Prepare Truffle
           command: |
                     sudo npm install -g truffle
+                    truffle_version=`truffle version | cut -c 1-15 | head -1`
+                    echo "export TRUFFLE_VERSION_FOR_SLACK='${truffle_version}'" >> $BASH_ENV
                     cd ~/smart-contracts/
                     npm install 
       - save_cache:
@@ -107,6 +109,10 @@ jobs:
                             },
                             {
                                 "type": "mrkdwn",
+                                "text": "*Truffle Version*: ${TRUFFLE_VERSION_FOR_SLACK}"
+                            },
+                            {
+                                "type": "mrkdwn",
                                 "text": "*Requester*: ${CIRCLE_USERNAME}"
                             }
                         ]
@@ -158,6 +164,10 @@ jobs:
                             {
                                 "type": "mrkdwn",
                                 "text": "*Tests Branch*: ${CIRCLE_BRANCH}"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Truffle Version*: ${TRUFFLE_VERSION_FOR_SLACK}"
                             },
                             {
                                 "type": "mrkdwn",
