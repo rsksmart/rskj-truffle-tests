@@ -11,7 +11,7 @@ parameters:
         default: "master"
     slack_channel:
         type: string
-        default: "integration-tests"
+        default: "UDY9ZV16J"
 orbs:
   slack: circleci/slack@4.1
 jobs:
@@ -37,7 +37,9 @@ jobs:
                     cd ~/rsksmart/rskj/rskj-core/build/libs/
                     f=`ls *-all.jar`
                     version=`echo $f | cut -c 11-15`
+                    truffle_version=`truffle version`
                     echo "export VERSION_FOR_SLACK='${version}'" >> $BASH_ENV
+                    echo "export TRUFFLE_VERSION_FOR_SLACK='${truffle_version}'" >> $BASH_ENV
       
       - restore_cache:
           keys:
@@ -64,7 +66,7 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done
-                    npm test
+                    
 
 
       - store_test_results:
@@ -104,6 +106,10 @@ jobs:
                             {
                                 "type": "mrkdwn",
                                 "text": "*Tests Branch*: ${CIRCLE_BRANCH}"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Truffle Version*: ${TRUFFLE_VERSION_FOR_SLACK}"
                             },
                             {
                                 "type": "mrkdwn",
