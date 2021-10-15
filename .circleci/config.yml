@@ -37,9 +37,7 @@ jobs:
                     cd ~/rsksmart/rskj/rskj-core/build/libs/
                     f=`ls *-all.jar`
                     version=`echo $f | cut -c 11-15`
-                    truffle_version=`truffle version`
                     echo "export VERSION_FOR_SLACK='${version}'" >> $BASH_ENV
-                    echo "export TRUFFLE_VERSION_FOR_SLACK='${truffle_version}'" >> $BASH_ENV
       
       - restore_cache:
           keys:
@@ -50,6 +48,8 @@ jobs:
           name: Prepare Truffle
           command: |
                     sudo npm install -g truffle
+                    truffle_version=`truffle version`
+                    echo "export TRUFFLE_VERSION_FOR_SLACK='${truffle_version}'" >> $BASH_ENV
                     cd ~/smart-contracts/
                     npm install 
       - save_cache:
