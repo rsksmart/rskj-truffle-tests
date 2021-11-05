@@ -1,17 +1,17 @@
 version: 2.1
 parameters:
-    repo:
-        type: string
-        default: "rsksmart/rskj.git"
-    version:
-        type: string
-        default: ""
-    branch:
-        type: string
-        default: "master"
-    slack_channel:
-        type: string
-        default: "integration-tests"
+  repo:
+    type: string
+    default: "rsksmart/rskj.git"
+  version:
+    type: string
+    default: ""
+  branch:
+    type: string
+    default: "master"
+  slack_channel:
+    type: string
+    default: "integration-tests"
 orbs:
   slack: circleci/slack@4.1
 jobs:
@@ -25,55 +25,54 @@ jobs:
       - checkout
       - run:
           name: Avoid hosts unknown for github
-          command: mkdir -p ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+          command: mkdir -p ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking
+            no\n" > ~/.ssh/config
       - run:
           name: Clone and Build RSKj
           command: |
-                    GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_fingerprint'
-                    git clone -b << pipeline.parameters.branch >> git@github.com:<< pipeline.parameters.repo >> ~/rsksmart/rskj
-                    cd ~/rsksmart/rskj/
-                    ./configure.sh
-                    ./gradlew clean build -x test
-                    cd ~/rsksmart/rskj/rskj-core/build/libs/
-                    f=`ls *-all.jar`
-                    version=`echo $f | cut -c 11-15`
-                    echo "export VERSION_FOR_SLACK='${version}'" >> $BASH_ENV
-      
+            GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_fingerprint'
+            git clone -b << pipeline.parameters.branch >> git@github.com:<< pipeline.parameters.repo >> ~/rsksmart/rskj
+            cd ~/rsksmart/rskj/
+            ./configure.sh
+            ./gradlew clean build -x test
+            cd ~/rsksmart/rskj/rskj-core/build/libs/
+            f=`ls *-all.jar`
+            version=`echo $f | cut -c 11-15`
+            echo "export VERSION_FOR_SLACK='${version}'" >> $BASH_ENV
+
       - restore_cache:
           keys:
             # when lock file changes, use increasingly general patterns to restore cache
-                - node-v1-{{ checksum "package-lock.json" }}
-              
+            - node-v1-{{ checksum "package-lock.json" }}
+
       - run:
           name: Prepare Truffle
           command: |
-                    sudo npm install -g truffle
-                    truffle_version=`truffle version | cut -c 1-15 | head -1`
-                    echo "export TRUFFLE_VERSION_FOR_SLACK='${truffle_version}'" >> $BASH_ENV
-                    cd ~/smart-contracts/
-                    npm install 
+            sudo npm install -g truffle
+            truffle_version=`truffle version | cut -c 1-15 | head -1`
+            echo "export TRUFFLE_VERSION_FOR_SLACK='${truffle_version}'" >> $BASH_ENV
+            cd ~/smart-contracts/
+            npm install 
       - save_cache:
           paths:
-                - ~/tmp/node_modules 
+            - ~/tmp/node_modules
           key: node-v1-{{ checksum "package-lock.json" }}
 
       - run:
           name: Start RskJ & Run Truffle Tests
           command: |
-                    java -Dminer.client.autoMine=true -Dblockchain.config.hardforkActivationHeights.iris300=0 -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-*-all.jar co.rsk.Start --regtest nohup &               
-                    until nc -z 127.0.0.1 4444
-                    do
-                      echo "Waiting for RskJ..."
-                      sleep 1
-                    done
-                    npm test
-
+            java -Dminer.client.autoMine=true -Dblockchain.config.hardforkActivationHeights.iris300=0 -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-*-all.jar co.rsk.Start --regtest nohup &               
+            until nc -z 127.0.0.1 4444
+            do
+              echo "Waiting for RskJ..."
+              sleep 1
+            done
+            npm test
 
       - store_test_results:
           path: ~/smart-contracts/results
       - store_artifacts:
           path: ~/smart-contracts/results
-
 
       - slack/notify:
           channel: << pipeline.parameters.slack_channel >>
@@ -194,17 +193,19 @@ jobs:
       - store_artifacts:
           path: ~/smart-contracts/logs
           destination: ~/tmp/logs
+    # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass
+    resource_class: large
 workflows:
-    commit:
-        jobs:
-            - build
-    daily:
-        triggers:
-            - schedule:
-                cron: "15 01 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-        jobs:
-            - build
+  commit:
+    jobs:
+      - build
+  daily:
+    triggers:
+      - schedule:
+          cron: "15 01 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
