@@ -2,10 +2,10 @@
  {
     "fields": {
         "project": {
-            "id": "10965"
+            "key": "CORE"
         },
         "issuetype": {
-            "id": "10285"
+            "name": "Test Execution"
         },
         "summary": "Test execution from rskj-truffle-tests on CircleCI",
         "description": "Results from automation running on CircleCI",
@@ -14,5 +14,8 @@
             "Automation",
             "Truffle-tests"
         ] 
+    },
+    "xrayFields": {
+        "testPlanKey": "CORE-941"
     }
 }
