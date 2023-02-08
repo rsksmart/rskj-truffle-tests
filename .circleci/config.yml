@@ -59,13 +59,13 @@ jobs:
       - run:
           name: Start RskJ & Run Truffle Tests
           command: |
-                    java -Dminer.client.autoMine=true -Dblockchain.config.hardforkActivationHeights.iris300=0 -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-*-all.jar co.rsk.Start --regtest nohup &               
+                    java -Dminer.client.autoMine=true -Dkeyvalue.datasource=rocksdb -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-*-all.jar co.rsk.Start --regtest nohup &               
                     until nc -z 127.0.0.1 4444
                     do
                       echo "Waiting for RskJ..."
                       sleep 1
                     done
-                    sleep 180
+                    sleep 60
                     npm test
 
 
