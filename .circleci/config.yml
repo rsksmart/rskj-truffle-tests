@@ -38,23 +38,22 @@ jobs:
                     f=`ls *-all.jar`
                     version=`echo $f | cut -c 11-15`
                     echo "export VERSION_FOR_SLACK='${version}'" >> $BASH_ENV
-      
+
       - restore_cache:
           keys:
             # when lock file changes, use increasingly general patterns to restore cache
                 - node-v1-{{ checksum "package-lock.json" }}
-              
+
       - run:
           name: Prepare Truffle
           command: |
-                    sudo npm install -g truffle@5.6.8
-                    truffle_version=`truffle version | cut -c 1-15 | head -1`
-                    echo "export TRUFFLE_VERSION_FOR_SLACK='${truffle_version}'" >> $BASH_ENV
                     cd ~/smart-contracts/
                     npm ci 
+                    truffle_version=`npx truffle version | cut -c 1-15 | head -1`
+                    echo "export TRUFFLE_VERSION_FOR_SLACK='${truffle_version}'" >> $BASH_ENV
       - save_cache:
           paths:
-                - ~/tmp/node_modules 
+                - ~/tmp/node_modules
           key: node-v1-{{ checksum "package-lock.json" }}
 
       - run:
@@ -66,18 +65,19 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done
+                    sleep 60
                     npm test
 
 
       - store_test_results:
           path: ~/smart-contracts/results
-    
+
       - run:
           name: Upload results to XRAY
           command: |
                     aut_token=`curl -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" -H "Content-Type: application/json" --data-raw "{\"client_id\": \"${XRAY_CID}\", \"client_secret\": \"${XRAY_SECRET}\"}"`
                     curl -X POST "https://xray.cloud.getxray.app/api/v2/import/execution/junit/multipart" -H "Authorization: Bearer ${aut_token:1:-1}" -F "results=@\"/home/circleci/smart-contracts/results/test-results.xml\"" -F "info=@\"/home/circleci/smart-contracts/xray-conf/createTestExecution.json\""
-      
+
       - store_artifacts:
           path: ~/smart-contracts/results
 
