@@ -65,7 +65,7 @@ jobs:
                       echo "Waiting for RskJ..."
                       sleep 1
                     done
-                    sleep 60
+                    sleep 180
                     npm test
 
 
