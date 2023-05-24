@@ -1,6 +1,6 @@
 # Welcome to rskj-truffle-tests test suite
 [![CircleCI](https://circleci.com/gh/rsksmart/rskj-truffle-tests/tree/master.svg?style=svg)](https://circleci.com/gh/rsksmart/rskj-truffle-tests/tree/master)
-
+test
 
 
 # About
