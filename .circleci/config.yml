@@ -19,7 +19,7 @@ jobs:
     working_directory: ~/smart-contracts
     # The primary container is an instance of the first image listed. The job's commands run in this container.
     docker:
-      - image: cimg/openjdk:8.0.362-node
+      - image: cimg/openjdk:17.0-node
     resource_class: large
     steps:
       - checkout
