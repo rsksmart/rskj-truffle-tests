@@ -22,7 +22,7 @@
   "devDependencies": {
     "bignumber.js": "^9.1.2",
     "mocha": "^10.2.0",
-    "mocha-junit-reporter": "^2.2.0",
+    "mocha-junit-reporter": "^2.2.1",
     "mocha-multi-reporters": "^1.5.1",
     "rlp": "^2.2.7",
     "truffle": "^5.7.5",
