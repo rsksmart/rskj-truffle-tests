@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/iovlabs-qa/rskj-truffle-tests#readme",
   "devDependencies": {
-    "bignumber.js": "^9.1.1",
+    "bignumber.js": "^9.1.2",
     "mocha": "^10.2.0",
     "mocha-junit-reporter": "^2.2.0",
     "mocha-multi-reporters": "^1.5.1",
