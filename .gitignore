@@ -3,3 +3,6 @@ test.sh
 node_modules
 build
 .idea
+.DS_Store
+.secret
+.env
