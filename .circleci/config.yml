@@ -33,6 +33,8 @@ jobs:
                     git clone -b << pipeline.parameters.branch >> git@github.com:<< pipeline.parameters.repo >> ~/rsksmart/rskj
                     cd ~/rsksmart/rskj/
                     ./configure.sh
+                    sed 's/rskip144 = 1/rskip144 = -1/' rskj-core/src/main/resources/config/regtest.conf > rskj-core/src/main/resources/config/temp.conf && mv -f rskj-core/src/main/resources/config/temp.conf rskj-core/src/main/resources/config/regtest.conf
+                    sed 's/rskip351 = 1/rskip351 = -1/' rskj-core/src/main/resources/config/regtest.conf > rskj-core/src/main/resources/config/temp.conf && mv -f rskj-core/src/main/resources/config/temp.conf rskj-core/src/main/resources/config/regtest.conf
                     ./gradlew clean build -x test
                     cd ~/rsksmart/rskj/rskj-core/build/libs/
                     f=`ls *-all.jar`
