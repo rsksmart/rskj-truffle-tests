@@ -48,7 +48,7 @@ jobs:
           name: Prepare Truffle
           command: |
                     cd ~/smart-contracts/
-                    npm ci 
+                    npm ci --no-optional
                     truffle_version=`npx truffle version | cut -c 1-15 | head -1`
                     echo "export TRUFFLE_VERSION_FOR_SLACK='${truffle_version}'" >> $BASH_ENV
       - save_cache:
