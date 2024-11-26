@@ -33,6 +33,8 @@ jobs:
                     git clone -b << pipeline.parameters.branch >> git@github.com:<< pipeline.parameters.repo >> ~/rsksmart/rskj
                     cd ~/rsksmart/rskj/
                     ./configure.sh
+                    sed 's/rskip144 = 1/rskip144 = -1/' rskj-core/src/main/resources/config/regtest.conf > rskj-core/src/main/resources/config/temp.conf && mv -f rskj-core/src/main/resources/config/temp.conf rskj-core/src/main/resources/config/regtest.conf
+                    sed 's/rskip351 = 1/rskip351 = -1/' rskj-core/src/main/resources/config/regtest.conf > rskj-core/src/main/resources/config/temp.conf && mv -f rskj-core/src/main/resources/config/temp.conf rskj-core/src/main/resources/config/regtest.conf
                     ./gradlew clean build -x test
                     cd ~/rsksmart/rskj/rskj-core/build/libs/
                     f=`ls *-all.jar`
@@ -48,7 +50,7 @@ jobs:
           name: Prepare Truffle
           command: |
                     cd ~/smart-contracts/
-                    npm ci 
+                    npm i --no-optional
                     truffle_version=`npx truffle version | cut -c 1-15 | head -1`
                     echo "export TRUFFLE_VERSION_FOR_SLACK='${truffle_version}'" >> $BASH_ENV
       - save_cache:
@@ -70,12 +72,6 @@ jobs:
 
       - store_test_results:
           path: ~/smart-contracts/results
-
-      - run:
-          name: Upload results to XRAY
-          command: |
-                    aut_token=`curl -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" -H "Content-Type: application/json" --data-raw "{\"client_id\": \"${XRAY_CID}\", \"client_secret\": \"${XRAY_SECRET}\"}"`
-                    curl -X POST "https://xray.cloud.getxray.app/api/v2/import/execution/junit/multipart" -H "Authorization: Bearer ${aut_token:1:-1}" -F "results=@\"/home/circleci/smart-contracts/results/test-results.xml\"" -F "info=@\"/home/circleci/smart-contracts/xray-conf/createTestExecution.json\""
 
       - store_artifacts:
           path: ~/smart-contracts/results
