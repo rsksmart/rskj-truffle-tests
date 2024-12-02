@@ -1,0 +1,87 @@
+name: Build and Test RSKj with Truffle
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "15 01 * * *"
+
+env:
+  REPO: rsksmart/rskj.git
+  BRANCH: master
+  SLACK_CHANNEL: integration-tests
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      JAVA_VERSION: 17
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Avoid unknown hosts for GitHub
+        run: |
+          mkdir -p ~/.ssh
+          echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+
+      - name: Clone and Build RSKj
+        run: |
+          git clone -b ${{ env.BRANCH }} git@github.com:${{ env.REPO }} ~/rsksmart/rskj
+          cd ~/rsksmart/rskj/
+          ./configure.sh
+          sed -i 's/rskip144 = 1/rskip144 = -1/' rskj-core/src/main/resources/config/regtest.conf
+          sed -i 's/rskip351 = 1/rskip351 = -1/' rskj-core/src/main/resources/config/regtest.conf
+          ./gradlew clean build -x test
+          cd rskj-core/build/libs/
+          JAR_FILE=$(ls *-all.jar)
+          echo "VERSION_FOR_SLACK=${JAR_FILE:10:5}" >> $GITHUB_ENV
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: ~/tmp/node_modules
+          key: node-v1-${{ hashFiles('package-lock.json') }}
+
+      - name: Prepare Truffle
+        run: |
+          cd ~/smart-contracts/
+          npm i --no-optional
+          TRUFFLE_VERSION=$(npx truffle version | head -1)
+          echo "TRUFFLE_VERSION_FOR_SLACK=${TRUFFLE_VERSION}" >> $GITHUB_ENV
+
+      - name: Start RSKj & Run Truffle Tests
+        run: |
+          java -Dminer.client.autoMine=true -Dtransaction.accountTxRateLimit.enabled=false -Dkeyvalue.datasource=rocksdb -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-*-all.jar co.rsk.Start --regtest &
+          until nc -z 127.0.0.1 4444; do sleep 1; done
+          npm test
+
+      - name: Store Test Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: ~/smart-contracts/results
+
+      - name: Notify on Slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "channel": "${{ env.SLACK_CHANNEL }}",
+              "attachments": [
+                {
+                  "pretext": "RskJ Truffle Tests Results",
+                  "fields": [
+                    { "title": "Repository", "value": "${{ env.REPO }}", "short": true },
+                    { "title": "Branch", "value": "${{ env.BRANCH }}", "short": true },
+                    { "title": "Version", "value": "${{ env.VERSION_FOR_SLACK }}", "short": true },
+                    { "title": "Truffle Version", "value": "${{ env.TRUFFLE_VERSION_FOR_SLACK }}", "short": true }
+                  ],
+                  "actions": [
+                    { "type": "button", "text": "View Job", "url": "${{ github.run_url }}" }
+                  ]
+                }
+              ]
+            }
