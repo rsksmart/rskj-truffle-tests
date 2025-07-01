@@ -74,7 +74,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci --no-optional
+          npm ci --omit=optional
           truffle_version=`npx truffle version | cut -c 1-15 | head -1`
           echo "TRUFFLE_VERSION_FOR_SLACK=${truffle_version}" >> $GITHUB_ENV
 
