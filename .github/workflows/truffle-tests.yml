@@ -1,5 +1,6 @@
 name: RSKj Truffle Tests
 
+# Workflow to run RSKj Truffle tests
 on:
   push:
     branches: [ master, main ]
