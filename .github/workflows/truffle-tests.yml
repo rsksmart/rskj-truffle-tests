@@ -59,14 +59,9 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      - name: Configure SSH for GitHub
-        run: |
-          mkdir -p ~/.ssh/
-          echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
-
       - name: Clone and Build RSKj
         run: |
-          git clone -b ${{ env.RSKJ_BRANCH }} git@github.com:${{ env.RSKJ_REPO }} ~/rsksmart/rskj
+          git clone -b ${{ env.RSKJ_BRANCH }} https://github.com/${{ env.RSKJ_REPO }} ~/rsksmart/rskj
           cd ~/rsksmart/rskj/
           ./configure.sh
           sed 's/rskip144 = 1/rskip144 = -1/' rskj-core/src/main/resources/config/regtest.conf > rskj-core/src/main/resources/config/temp.conf && mv -f rskj-core/src/main/resources/config/temp.conf rskj-core/src/main/resources/config/regtest.conf
