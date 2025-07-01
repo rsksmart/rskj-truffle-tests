@@ -77,6 +77,14 @@ jobs:
         env:
           npm_config_optional: false
 
+      - name: Check Slack webhook
+        run: |
+          if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            echo "SLACK_WEBHOOK_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "SLACK_WEBHOOK_EXISTS=false" >> $GITHUB_ENV
+          fi
+
       - name: Start RSKj and Run Tests
         run: |
           java -Dminer.client.autoMine=true -Dtransaction.accountTxRateLimit.enabled=false -Dkeyvalue.datasource=rocksdb -cp ~/rsksmart/rskj/rskj-core/build/libs/rskj-core-*-all.jar co.rsk.Start --regtest &
@@ -104,7 +112,7 @@ jobs:
           retention-days: 30
 
       - name: Notify Slack on Success
-        if: success() && secrets.SLACK_WEBHOOK_URL != ''
+        if: success() && env.SLACK_WEBHOOK_EXISTS == 'true'
         uses: 8398a7/action-slack@v3
         with:
           status: success
@@ -124,7 +132,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Notify Slack on Failure
-        if: failure() && secrets.SLACK_WEBHOOK_URL != ''
+        if: failure() && env.SLACK_WEBHOOK_EXISTS == 'true'
         uses: 8398a7/action-slack@v3
         with:
           status: failure
