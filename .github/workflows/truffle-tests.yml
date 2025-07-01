@@ -1,11 +1,10 @@
 name: RSKj Truffle Tests
 
-# Workflow to run RSKj Truffle tests
 on:
   push:
     branches: [ master, main ]
   pull_request:
-    # Run on PRs targeting any branch
+    branches: [ master, main ]
   schedule:
     # Daily at 1:15 AM UTC
     - cron: '15 1 * * *'
@@ -72,7 +71,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci --omit=optional --ignore-scripts --no-optional
+          npm install --omit=optional --ignore-scripts --no-optional
           truffle_version=`npx truffle version | cut -c 1-15 | head -1`
           echo "TRUFFLE_VERSION_FOR_SLACK=${truffle_version}" >> $GITHUB_ENV
         env:
@@ -105,7 +104,7 @@ jobs:
           retention-days: 30
 
       - name: Notify Slack on Success
-        if: success() && secrets.SLACK_WEBHOOK_URL != ''
+        if: success()
         uses: 8398a7/action-slack@v3
         with:
           status: success
@@ -125,7 +124,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Notify Slack on Failure
-        if: failure() && secrets.SLACK_WEBHOOK_URL != ''
+        if: failure()
         uses: 8398a7/action-slack@v3
         with:
           status: failure
