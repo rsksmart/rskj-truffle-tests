@@ -37,7 +37,7 @@ env:
   SLACK_CHANNEL: ${{ github.event.inputs.slack_channel || 'integration-tests' }}
 
 jobs:
-  build:
+  rskj-truffle-tests:
     runs-on: ubuntu-latest
     
     steps:
