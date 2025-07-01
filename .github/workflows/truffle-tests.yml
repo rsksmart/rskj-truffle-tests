@@ -74,9 +74,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci --omit=optional
+          npm install --omit=optional --ignore-scripts --no-optional
           truffle_version=`npx truffle version | cut -c 1-15 | head -1`
           echo "TRUFFLE_VERSION_FOR_SLACK=${truffle_version}" >> $GITHUB_ENV
+        env:
+          npm_config_optional: false
 
       - name: Start RSKj and Run Tests
         run: |
